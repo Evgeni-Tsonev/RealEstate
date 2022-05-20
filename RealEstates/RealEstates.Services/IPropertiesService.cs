@@ -10,6 +10,8 @@
 
         decimal AveragePricePerSquareMeter(int propertyId);
 
+        double AverageSize(int districtId);
+
         IEnumerable<PropertyInfoDto> Search(int minPrice, int maxPrice, int minSize, int maxSize);
     }
 }
