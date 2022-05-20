@@ -20,9 +20,10 @@ class Program
             Console.WriteLine("1. Property search");
             Console.WriteLine("2. Most expensive districts");
             Console.WriteLine("3. Average price per square meter");
-            Console.WriteLine("4. Add tag");
-            Console.WriteLine("5. Bulk tag to poperties");
-            Console.WriteLine("6. Property Full Info");
+            Console.WriteLine("4. Average price per square meter for concretely district");
+            Console.WriteLine("5. Add tag");
+            Console.WriteLine("6. Bulk tag to poperties");
+            Console.WriteLine("7. Property Full Info");
             Console.WriteLine("0. EXIT");
             bool parsed = int.TryParse(Console.ReadLine(), out int option);
             if (parsed && option == 0)
@@ -44,12 +45,15 @@ class Program
                         AveragePricePerSquareMeter(db);
                         break;
                     case 4:
-                        AddTag(db);
+                        AveragePricePerSquareMeterForConcretelyDistrict(db);
                         break;
                     case 5:
-                        BulkTagToProperties(db);
+                        AddTag(db);
                         break;
                     case 6:
+                        BulkTagToProperties(db);
+                        break;
+                    case 7:
                         PropertyFullInfo(db);
                         break;
                 }
@@ -72,12 +76,28 @@ class Program
 
     private static void AddTag(ApplicationDbContext db)
     {
-        throw new NotImplementedException();
+        Console.WriteLine("Tag name:");
+        var name = Console.ReadLine();
+        Console.WriteLine("Importance (optional):");
+        bool isParsed = int.TryParse(Console.ReadLine(), out int tagImportance);
+        int? importance = isParsed ? tagImportance : null;
+
+        ITagService service = new TagService(db);
+        service.AddTag(name, importance);
     }
 
     private static void AveragePricePerSquareMeter(ApplicationDbContext db)
     {
-        throw new NotImplementedException();
+        IPropertiesService service = new PropertiesService(db);
+        Console.WriteLine($"Average price per square meter: {service.AveragePricePerSquareMeter():0.00}€/m²");
+    }
+
+    private static void AveragePricePerSquareMeterForConcretelyDistrict(ApplicationDbContext db)
+    {
+        Console.WriteLine("PropertyId:");
+        var propertyId = int.Parse(Console.ReadLine());
+        IPropertiesService service = new PropertiesService(db);
+        Console.WriteLine($"Average price per square meter: {service.AveragePricePerSquareMeter(propertyId):0.00}€/m²");
     }
 
     private static void MostExpensiveDistricts(ApplicationDbContext db)

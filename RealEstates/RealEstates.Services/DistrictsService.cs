@@ -1,12 +1,7 @@
-﻿using RealEstates.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RealEstates.Services
+﻿namespace RealEstates.Services
 {
+    using RealEstates.Data;
+
     public class DistrictsService : IDistrictsService
     {
         private readonly ApplicationDbContext dbContext;
@@ -15,7 +10,6 @@ namespace RealEstates.Services
         {
             this.dbContext = dbContext;
         }
-
 
 
         public IEnumerable<DistrictInfoDto> GetMostExpensiveDistricts(int count)
